@@ -3,8 +3,15 @@ using UnityEngine;
 
 public class BoidObjectManager : MonoBehaviour
 {
-    private List<SheepController> _sheepList;
-    
+    public static List<SheepController> _sheepList;
+
+    public List<SheepController> SheepList => _sheepList;
+
+    private void Awake()
+    {
+        _sheepList = new List<SheepController>();
+    }
+/*
     private void Start()
     {
         SheepController[] sheep = FindObjectsOfType<SheepController>();
@@ -13,5 +20,10 @@ public class BoidObjectManager : MonoBehaviour
         {
             _sheepList.Add(sheep[i]);
         }
+    }
+*/
+    private void Update()
+    {
+        Debug.Log(_sheepList.Count);
     }
 }

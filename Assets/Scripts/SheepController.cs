@@ -4,13 +4,31 @@ using UnityEngine;
 public class SheepController : MonoBehaviour
 {
     private Rigidbody2D _rb;
-    private float _visualRange;
+    [SerializeField] private float visualRange = 20f;
     private List<Transform> _boidsInView;
     private Vector2 _movementDirection;
     private Vector2 _movementDirectionPotential;
 
+    //private BoidObjectManager _objectManager;
+
     [SerializeField] private float cohesionStrength = 100f;
     [SerializeField] private float separationStrength = 100f;
+    [SerializeField] private float alignmentStrength = 8f;
+
+    private Vector2 _debugSepartaion;
+    private Vector2 _debugCohesion;
+    private Vector2 _debugAlignment;
+
+    private void Awake()
+    {
+        _boidsInView = new List<Transform>();
+        _rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        BoidObjectManager._sheepList.Add(this);
+    }
 
     private void FixedUpdate()
     {
@@ -20,12 +38,24 @@ public class SheepController : MonoBehaviour
 
     private void BoidDetection()
     {
-        
+        _boidsInView.Clear();
+
+        foreach (var sheep in BoidObjectManager._sheepList)
+        {
+            if (Vector2.Distance(sheep.transform.position, transform.position) < visualRange)
+            {
+                _boidsInView.Add(sheep.transform);
+            }
+        }
     }
 
     private void BoidUpdate()
     {
-        _movementDirectionPotential = _rb.velocity + Cohesion() + Alignment() + Separation();
+        _debugSepartaion = Separation();
+        _debugCohesion = Cohesion();
+        _debugAlignment = Alignment();
+        
+        _movementDirectionPotential = _rb.velocity + _debugCohesion + _debugAlignment + _debugSepartaion;
         _rb.AddForce(_movementDirectionPotential);
     }
     
@@ -55,7 +85,7 @@ public class SheepController : MonoBehaviour
 
         workVector = workVector / _boidsInView.Count;
 
-        return (workVector - _rb.velocity) / 8;
+        return (workVector - _rb.velocity) / alignmentStrength;
     }
 
     private Vector2 Cohesion()
@@ -71,4 +101,18 @@ public class SheepController : MonoBehaviour
 
         return (workVector - (Vector2)transform.position) / cohesionStrength;
     }
+
+    #if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, _debugCohesion);
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(transform.position, _debugSepartaion);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, _debugAlignment);
+    }
+    #endif
 }
