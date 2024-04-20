@@ -4,16 +4,17 @@ using UnityEngine;
 public class SheepController : MonoBehaviour
 {
     private Rigidbody2D _rb;
-    [SerializeField] private float visualRange = 20f;
+    [SerializeField] private float visualRange = 4f;
     private List<Transform> _boidsInView;
     private Vector2 _movementDirection;
     private Vector2 _movementDirectionPotential;
 
     //private BoidObjectManager _objectManager;
 
-    [SerializeField] private float cohesionStrength = 100f;
-    [SerializeField] private float separationStrength = 100f;
-    [SerializeField] private float alignmentStrength = 8f;
+    [SerializeField] private float movementSpeed = 1f;
+    [SerializeField] private float cohesionStrength = 1f;
+    [SerializeField] private float separationStrength = 1f;
+    [SerializeField] private float alignmentStrength = 1f;
 
     private Vector2 _debugSepartaion;
     private Vector2 _debugCohesion;
@@ -33,7 +34,7 @@ public class SheepController : MonoBehaviour
     private void FixedUpdate()
     {
         BoidDetection();
-        BoidUpdate();
+        BoidUpdateFlockBehaviour();
     }
 
     private void BoidDetection()
@@ -49,14 +50,14 @@ public class SheepController : MonoBehaviour
         }
     }
 
-    private void BoidUpdate()
+    private void BoidUpdateFlockBehaviour()
     {
         _debugSepartaion = Separation();
         _debugCohesion = Cohesion();
         _debugAlignment = Alignment();
         
         _movementDirectionPotential = _rb.velocity + _debugCohesion + _debugAlignment + _debugSepartaion;
-        _rb.AddForce(_movementDirectionPotential);
+        _rb.AddForce(_movementDirectionPotential * movementSpeed);
     }
     
     private Vector2 Separation()
@@ -80,7 +81,7 @@ public class SheepController : MonoBehaviour
 
         foreach (var boid in _boidsInView)
         {
-            workVector += boid.GetComponent<SheepController>()._rb.velocity;
+            workVector += boid.GetComponent<SheepController>()._rb.velocity; // Should not get component in fixedUpdate.
         }
 
         workVector = workVector / _boidsInView.Count;
@@ -113,6 +114,9 @@ public class SheepController : MonoBehaviour
 
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, _debugAlignment);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, visualRange);
     }
     #endif
 }

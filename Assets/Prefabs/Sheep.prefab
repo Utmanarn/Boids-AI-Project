@@ -107,7 +107,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &-6686860120539504371
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -136,7 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d13c626715c8b4408f679bb79abf950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualRange: 20
-  objectManager: {fileID: 0}
-  cohesionStrength: 100
-  separationStrength: 100
+  visualRange: 1.5
+  movementSpeed: 4
+  cohesionStrength: 1
+  separationStrength: 1
+  alignmentStrength: 1
