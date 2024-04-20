@@ -16,9 +16,13 @@ public class SheepController : MonoBehaviour
     [SerializeField] private float separationStrength = 1f;
     [SerializeField] private float alignmentStrength = 1f;
 
+    [Header("Other Modifiers")] 
+    [SerializeField] private float tendToPlaceInfluenceStrength = 1f;
+
     private Vector2 _debugSepartaion;
     private Vector2 _debugCohesion;
     private Vector2 _debugAlignment;
+    private Vector2 _tendToVector;
 
     private void Awake()
     {
@@ -28,7 +32,7 @@ public class SheepController : MonoBehaviour
 
     private void Start()
     {
-        BoidObjectManager._sheepList.Add(this);
+        BoidObjectManager.SheepList.Add(this);
     }
 
     private void FixedUpdate()
@@ -41,7 +45,7 @@ public class SheepController : MonoBehaviour
     {
         _boidsInView.Clear();
 
-        foreach (var sheep in BoidObjectManager._sheepList)
+        foreach (var sheep in BoidObjectManager.SheepList)
         {
             if (Vector2.Distance(sheep.transform.position, transform.position) < visualRange)
             {
@@ -57,6 +61,7 @@ public class SheepController : MonoBehaviour
         _debugAlignment = Alignment();
         
         _movementDirectionPotential = _rb.velocity + _debugCohesion + _debugAlignment + _debugSepartaion;
+        _movementDirectionPotential += _tendToVector;
         _rb.AddForce(_movementDirectionPotential * movementSpeed);
     }
     
@@ -101,6 +106,11 @@ public class SheepController : MonoBehaviour
         workVector = workVector / _boidsInView.Count;
 
         return (workVector - (Vector2)transform.position) / cohesionStrength;
+    }
+
+    public void TendToPlace(Vector2 place)
+    {
+        _tendToVector = ((place - (Vector2)transform.position) / tendToPlaceInfluenceStrength) * movementSpeed;
     }
 
     #if UNITY_EDITOR

@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RepelBoids : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private float repelRange = 1.5f;
+    
+    private void FixedUpdate()
     {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, repelRange); // BUG: Figure out why it is not detecting collisions.
         
+        Debug.Log(hitColliders.Length);
+
+        foreach (var collider in hitColliders)
+        {
+            if (!collider.TryGetComponent(out SheepController sheep)) return;
+
+            sheep.TendToPlace(transform.position);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDrawGizmos()
     {
-        
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, repelRange);
     }
 }
