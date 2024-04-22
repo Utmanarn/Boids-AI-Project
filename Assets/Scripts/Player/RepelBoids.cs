@@ -6,15 +6,13 @@ public class RepelBoids : MonoBehaviour
     
     private void FixedUpdate()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, repelRange); // BUG: Figure out why it is not detecting collisions.
-        
-        Debug.Log(hitColliders.Length);
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, repelRange); // BUG: Figure out why it is not detecting collisions.
 
         foreach (var collider in hitColliders)
         {
-            if (!collider.TryGetComponent(out SheepController sheep)) return;
+            if (!collider.TryGetComponent(out SheepController sheep)) continue;
 
-            sheep.TendToPlace(transform.position);
+            sheep.TendToPlaceScaled(transform.position);
         }
     }
 

@@ -6,7 +6,6 @@ public class SheepController : MonoBehaviour
     private Rigidbody2D _rb;
     [SerializeField] private float visualRange = 4f;
     private List<Transform> _boidsInView;
-    private Vector2 _movementDirection;
     private Vector2 _movementDirectionPotential;
 
     //private BoidObjectManager _objectManager;
@@ -14,14 +13,14 @@ public class SheepController : MonoBehaviour
     [SerializeField] private float movementSpeed = 1f;
     [SerializeField] private float cohesionStrength = 1f;
     [SerializeField] private float separationStrength = 1f;
-    [SerializeField] private float alignmentStrength = 1f;
+    [SerializeField] private float velocityAlignmentStrength = 1f;
 
     [Header("Other Modifiers")] 
-    [SerializeField] private float tendToPlaceInfluenceStrength = 1f;
+    [SerializeField] private float tendToPlaceInfluenceStrengthDivider = 1f;
 
     private Vector2 _debugSepartaion;
     private Vector2 _debugCohesion;
-    private Vector2 _debugAlignment;
+    private Vector2 _debugMatchAlignment;
     private Vector2 _tendToVector;
 
     private void Awake()
@@ -58,10 +57,13 @@ public class SheepController : MonoBehaviour
     {
         _debugSepartaion = Separation();
         _debugCohesion = Cohesion();
-        _debugAlignment = Alignment();
+        _debugMatchAlignment = MatchVelocity();
+
+        Alignment();
         
-        _movementDirectionPotential = _rb.velocity + _debugCohesion + _debugAlignment + _debugSepartaion;
-        _movementDirectionPotential += _tendToVector;
+        _movementDirectionPotential = _rb.velocity + _debugCohesion + _debugMatchAlignment + _debugSepartaion;
+        _movementDirectionPotential += -1 * _tendToVector;
+        _tendToVector = Vector2.zero;
         _rb.AddForce(_movementDirectionPotential * movementSpeed);
     }
     
@@ -80,7 +82,7 @@ public class SheepController : MonoBehaviour
         return workVector;
     }
 
-    private Vector2 Alignment()
+    private Vector2 MatchVelocity()
     {
         Vector2 workVector = Vector2.zero;
 
@@ -91,7 +93,7 @@ public class SheepController : MonoBehaviour
 
         workVector = workVector / _boidsInView.Count;
 
-        return (workVector - _rb.velocity) / alignmentStrength;
+        return (workVector - _rb.velocity) / velocityAlignmentStrength;
     }
 
     private Vector2 Cohesion()
@@ -108,22 +110,39 @@ public class SheepController : MonoBehaviour
         return (workVector - (Vector2)transform.position) / cohesionStrength;
     }
 
+    private void Alignment()
+    {
+        Vector2 alignmentValue = new Vector2();
+        
+        foreach (var boid in _boidsInView)
+        {
+            alignmentValue += (Vector2) boid.up;
+        }
+
+        transform.up += (Vector3) alignmentValue;
+    }
+
     public void TendToPlace(Vector2 place)
     {
-        _tendToVector = ((place - (Vector2)transform.position) / tendToPlaceInfluenceStrength) * movementSpeed;
+        _tendToVector = ((place - (Vector2)transform.position) / tendToPlaceInfluenceStrengthDivider);
+    }
+
+    public void TendToPlaceScaled(Vector2 place)
+    {
+        _tendToVector += (place - (Vector2)transform.position) / (Vector2.Distance(transform.position, place) * 0.5f);
     }
 
     #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, _debugCohesion);
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3) _debugCohesion);
 
         Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(transform.position, _debugSepartaion);
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3) _debugSepartaion);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, _debugAlignment);
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3) _debugMatchAlignment);
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, visualRange);

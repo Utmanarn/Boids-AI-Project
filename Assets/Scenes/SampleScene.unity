@@ -191,6 +191,7 @@ GameObject:
   - component: {fileID: 280089479}
   - component: {fileID: 280089478}
   - component: {fileID: 280089480}
+  - component: {fileID: 280089481}
   m_Layer: 0
   m_Name: Fence (1)
   m_TagString: Untagged
@@ -291,6 +292,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &280089481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280089477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b3e026c196ffb409e5d9c7d13b383f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  repelRange: 1.5
 --- !u!1 &335752445
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,6 +435,7 @@ GameObject:
   - component: {fileID: 677864707}
   - component: {fileID: 677864706}
   - component: {fileID: 677864708}
+  - component: {fileID: 677864709}
   m_Layer: 0
   m_Name: Fence (3)
   m_TagString: Untagged
@@ -521,6 +536,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &677864709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677864705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b3e026c196ffb409e5d9c7d13b383f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  repelRange: 1.5
 --- !u!1 &731810643
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,6 +560,7 @@ GameObject:
   - component: {fileID: 731810645}
   - component: {fileID: 731810644}
   - component: {fileID: 731810646}
+  - component: {fileID: 731810647}
   m_Layer: 0
   m_Name: Fence (2)
   m_TagString: Untagged
@@ -632,6 +661,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &731810647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731810643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b3e026c196ffb409e5d9c7d13b383f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  repelRange: 1.5
 --- !u!1001 &740641664
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -700,6 +742,7 @@ GameObject:
   - component: {fileID: 857187997}
   - component: {fileID: 857187999}
   - component: {fileID: 857187998}
+  - component: {fileID: 857188000}
   m_Layer: 0
   m_Name: Fence
   m_TagString: Untagged
@@ -800,6 +843,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &857188000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857187996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b3e026c196ffb409e5d9c7d13b383f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  repelRange: 1.5
 --- !u!1 &1125704136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,6 +1219,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2983198070946465795, guid: 55eb32d091b77514fb54d7dafe842ce7, type: 3}
+      propertyPath: tendToPlaceInfluenceStrength
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6198312729284809872, guid: 55eb32d091b77514fb54d7dafe842ce7, type: 3}
       propertyPath: m_Name
       value: Sheep

@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        if (TryGetComponent(out _rb)) ;
+        if (TryGetComponent(out _rb));
         else Debug.LogError("Failed to get the player rigidbody.");
     }
 
