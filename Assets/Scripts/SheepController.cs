@@ -4,8 +4,8 @@ using UnityEngine;
 public class SheepController : MonoBehaviour
 {
     private Rigidbody2D _rb;
-    [SerializeField] private float visualRange = 4f;
-    [SerializeField] private float seekDistance = 5f;
+    [SerializeField] private float visualRange = 2f;
+    [SerializeField] private float seekDistance = 7f;
     private List<Transform> _boidsInView;
     private Vector2 _movementDirectionPotential;
 
@@ -16,9 +16,10 @@ public class SheepController : MonoBehaviour
 
     //private BoidObjectManager _objectManager;
 
-    [SerializeField] private float movementSpeed = 1f;
+    [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float cohesionStrength = 1f;
-    [SerializeField] private float separationStrength = 1f;
+    [SerializeField] private float separationStrength = 1.5f;
+    [SerializeField] private float separationDistance = 1.5f;
     [SerializeField] private float velocityAlignmentStrength = 1f;
     [SerializeField] private float seekStrength = 1f;
 
@@ -85,13 +86,13 @@ public class SheepController : MonoBehaviour
 
         foreach (var boid in _boidsInView)
         {
-            if (Vector2.Distance(boid.position, transform.position) < separationStrength)
+            if (Vector2.Distance(boid.position, transform.position) < separationDistance)
             {
                 workVector -= (Vector2) (boid.position - transform.position);
             }
         }
 
-        return workVector;
+        return workVector * separationStrength;
     }
 
     private Vector2 MatchVelocity()
@@ -143,28 +144,22 @@ public class SheepController : MonoBehaviour
         Vector2 playerPos = playerPosition.position;
         Vector2 pos = transform.position;
 
-        // Calculates direction and distance
         Vector2 direction = playerPos - pos;
         float distance = direction.magnitude;
 
 
-        // If cat is close enough, make it run from cursor
         if (distance <= seekDistance)
         {
             linear = playerPos - pos;
             linear = linear.normalized * 5;
             seeking = true;
-            //gameObject.tag = "Cat";
 
         }
         else
         {
             seeking = false;
-            //gameObject.tag = "SeperatedCat";
 
         }
-
-        //Debug.Log(yo + " " + gameObject.name);
 
         Vector2 acceleration = linear * seekStrength;
 
@@ -173,12 +168,9 @@ public class SheepController : MonoBehaviour
 
     private void Rotate()
     {
-        // Gets the angle for where the cats are supposed to look
-        float angle = Mathf.Atan2(GetComponent<Rigidbody2D>().velocity.x, -GetComponent<Rigidbody2D>().velocity.y) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(_rb.velocity.x, -_rb.velocity.y) * Mathf.Rad2Deg;
 
-        // Sets the angle
         angular = Mathf.LerpAngle(transform.rotation.eulerAngles.z, angle, 3 * Time.deltaTime);
-        //linear = Vector2.zero;
 
         float rotation = angular * 1;
         _rb.rotation = rotation;

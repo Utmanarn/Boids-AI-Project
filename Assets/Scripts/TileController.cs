@@ -3,37 +3,44 @@ using UnityEngine;
 
 public class TileController : MonoBehaviour
 {
-    private float timer = 0;
-    [SerializeField] private float maxTimer = 5f;
+    [System.NonSerialized]
+    public int requiredSheep = 7;
 
-    [SerializeField] private List<GrassTiles> grassTiles;
+    [SerializeField]
+    private List<GrassTiles> grassTiles;
+    [SerializeField]
+    private ScoreSO scoreSO;
+
     private GrassTiles currentGrassTile;
-    private GameController gameController;
 
     private void Awake()
     {
         currentGrassTile = grassTiles[0];
-        gameController = FindAnyObjectByType<GameController>();
+    }
+
+    private void Start()
+    {
+        SetNewGrassTile();
     }
 
     private void Update()
     {
-        timer -= Time.deltaTime;
-
-        if (timer <= 0 || currentGrassTile.sheepCount >= 7)
+        if (currentGrassTile.sheepCount >= requiredSheep)
         {
-            if (currentGrassTile.sheepCount >= 7)
-                gameController.Score++;
+            scoreSO.Score++;
 
-            currentGrassTile.SetTileToDirt();
-
-            int randNum = Random.Range(0, grassTiles.Count);
-
-            currentGrassTile = grassTiles[randNum];
-
-            currentGrassTile.SetTileToGrass();
-
-            timer = maxTimer;
+            SetNewGrassTile();
         }
+    }
+
+    private void SetNewGrassTile()
+    {
+        currentGrassTile.SetTileToDirt();
+
+        int randNum = Random.Range(0, grassTiles.Count);
+
+        currentGrassTile = grassTiles[randNum];
+
+        currentGrassTile.SetTileToGrass();
     }
 }

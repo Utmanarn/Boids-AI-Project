@@ -2,12 +2,7 @@ using UnityEngine;
 
 public class WallBoidRepeller : MonoBehaviour
 {
-    private Vector2 _size;
-
-    private void Start()
-    {
-        _size = new Vector2(transform.localScale.x, transform.localScale.y) * 4f;
-    }
+    [SerializeField] private Vector2 _size;
 
     private void FixedUpdate()
     {

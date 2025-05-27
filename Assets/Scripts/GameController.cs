@@ -6,6 +6,10 @@ public class GameController : MonoBehaviour
 {
     private GateController gateController;
     private AddNewSheep addNewSheep;
+    private TileController tileController;
+    
+    [SerializeField]
+    private ScoreSO scoreSO;
 
     [SerializeField] private float cycleTime = 120f;
     private float gameTime;
@@ -16,12 +20,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textMeshScore;
     [SerializeField] private TextMeshProUGUI textMeshTime;
 
-    public int Score;
-
     private void Awake()
     {
         gateController = FindAnyObjectByType<GateController>();
         addNewSheep = FindAnyObjectByType<AddNewSheep>();
+        tileController = FindAnyObjectByType<TileController>();
     }
 
     private void Start()
@@ -31,7 +34,7 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        textMeshScore.text = "Score: " + Score;
+        textMeshScore.text = "Score: " + scoreSO.Score;
         textMeshTime.text = "Time: " + (int) gameTime;
 
         if (gameCycles > maxCycles)
@@ -51,6 +54,7 @@ public class GameController : MonoBehaviour
     private void AddSheep()
     {
         gateController.OpenGate();
+        tileController.requiredSheep += 1;
         StartCoroutine(addNewSheep.SpawnNewSheep(2));
     }
 

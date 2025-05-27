@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class GrassTiles : MonoBehaviour
 {
-    private new BoxCollider2D collider;
     private SpriteRenderer spriteRenderer;
 
     public int sheepCount = 0;
@@ -13,7 +12,6 @@ public class GrassTiles : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        collider = GetComponent<BoxCollider2D>();
     }
 
     public void SetTileToGrass()
