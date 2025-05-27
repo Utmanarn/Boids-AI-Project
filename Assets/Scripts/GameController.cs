@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         gameTime = cycleTime;
+        scoreSO.Score = 0;
     }
 
     private void Update()

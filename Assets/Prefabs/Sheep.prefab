@@ -138,9 +138,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualRange: 2
   seekDistance: 7
-  movementSpeed: 5
+  movementSpeed: 7
   cohesionStrength: 1
-  separationStrength: 1.5
+  separationStrength: 1.4
   separationDistance: 1.5
   velocityAlignmentStrength: 1
   seekStrength: 1.1
